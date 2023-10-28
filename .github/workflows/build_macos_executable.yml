@@ -25,11 +25,11 @@ jobs:
 
     - name: Build Executable
       run: |
-        pyinstaller --onefile your_script.py
+        pyinstaller --onefile main.py
         # Replace 'main.py' with your actual script filename
 
     - name: Upload Executable
       uses: actions/upload-artifact@v2
       with:
         name: mac_exe.app
-        path: dist/your_script
+        path: dist/main
