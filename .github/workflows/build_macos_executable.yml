@@ -34,7 +34,8 @@ jobs:
         # Compress the executable into a zip file
         # Set up your GitHub token (TOKEN) as a secret in your repository
         curl -X POST \
-          -H "Authorization: token ${{ secrets.TOKEN }}" \
-          -H "Content-Type: application/zip" \
-          --data-binary "@mac_exe.zip" \
-          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.ref }}/assets?name=mac_exe.zip"
+        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        -H "Content-Type: application/zip" \
+        --upload-file mac_exe.zip \
+        "https://uploads.github.com/repos/MS-Jahan/test-macos-exe/releases/refs/heads/main/assets?name=mac_exe.zip"
+
