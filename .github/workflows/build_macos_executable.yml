@@ -26,16 +26,27 @@ jobs:
     - name: Build Executable
       run: |
         pyinstaller --onefile main.py
+        zip -r mac_exe.zip dist/main
         # Replace 'main.py' with your actual script filename
 
-    - name: Upload Executable
-      run: |
-        zip -r mac_exe.zip dist/main
-        # Compress the executable into a zip file
-        # Set up your GitHub token (TOKEN) as a secret in your repository
-        curl -X POST \
-        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        -H "Content-Type: application/zip" \
-        --upload-file mac_exe.zip \
-        "https://uploads.github.com/repos/MS-Jahan/test-macos-exe/releases/refs/heads/main/assets?name=mac_exe.zip"
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
 
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./mac_exe.zip
+        asset_name: mac_exe.zip
+        asset_content_type: application/zip
