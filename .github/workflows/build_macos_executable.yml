@@ -29,28 +29,13 @@ jobs:
         zip -r mac_exe.zip dist/main
         # Replace 'main.py' with your actual script filename
 
-    - name: Extract Tag Name
-      id: extract_tag
-      run: echo "Tag name ${{ github.ref }}" | awk -F/ '{print $NF}'
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      with:
-        tag_name: ${{ steps.extract_tag.outputs.tag_name }}
-        release_name: Release ${{ steps.extract_tag.outputs.tag_name }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      id: upload-release-asset
+    - name: Upload assets
+      id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./mac_exe.zip
         asset_name: mac_exe.zip
         asset_content_type: application/zip
