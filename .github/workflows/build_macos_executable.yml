@@ -27,7 +27,7 @@ jobs:
       run: |
         pyinstaller --onefile main.py
         zip -r mac_exe.zip dist/main
-        # Replace 'main.py' with your actual script filename
+        # Replace 'main.py' with your actual script filename 1
 
     - name: Upload assets
       id: upload-release-asset 
