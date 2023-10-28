@@ -1,4 +1,4 @@
-name: Build macOS Executable
+name: Build and Upload macOS Executable
 
 on:
   push:
@@ -29,7 +29,12 @@ jobs:
         # Replace 'main.py' with your actual script filename
 
     - name: Upload Executable
-      uses: actions/upload-artifact@v2
-      with:
-        name: mac_exe.app
-        path: dist/main
+      run: |
+        zip -r mac_exe.zip dist/main
+        # Compress the executable into a zip file
+        # Set up your GitHub token (TOKEN) as a secret in your repository
+        curl -X POST \
+          -H "Authorization: token ${{ secrets.TOKEN }}" \
+          -H "Content-Type: application/zip" \
+          --data-binary "@mac_exe.zip" \
+          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.ref }}/assets?name=mac_exe.zip"
