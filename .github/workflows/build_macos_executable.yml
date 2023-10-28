@@ -31,7 +31,7 @@ jobs:
 
     - name: Extract Tag Name
       id: extract_tag
-      run: echo "Tag name:: ${{ github.ref }}" | awk -F/ '{print $NF}'
+      run: echo "Tag name ${{ github.ref }}" | awk -F/ '{print $NF}'
 
     - name: Create Release
       id: create_release
