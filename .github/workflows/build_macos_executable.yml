@@ -27,7 +27,11 @@ jobs:
       run: |
         pyinstaller --onefile main.py
         zip -r mac_exe.zip dist/main
-        # Replace 'main.py' with your actual script filename #asdasd
+        # Replace 'main.py' with your actual script filename
+
+    - name: Extract Tag Name
+      id: extract_tag
+      run: echo "Tag name:: ${{ github.ref }}" | awk -F/ '{print $NF}'
 
     - name: Create Release
       id: create_release
@@ -35,8 +39,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ steps.extract_tag.outputs.tag_name }}
+        release_name: Release ${{ steps.extract_tag.outputs.tag_name }}
         draft: false
         prerelease: false
 
