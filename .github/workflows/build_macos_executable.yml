@@ -27,7 +27,7 @@ jobs:
       run: |
         pyinstaller --onefile main.py
         zip -r mac_exe.zip dist/main
-        # Replace 'main.py' with your actual script filename
+        # Replace 'main.py' with your actual script filename #asdasd
 
     - name: Create Release
       id: create_release
