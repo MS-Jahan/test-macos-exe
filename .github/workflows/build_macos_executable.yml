@@ -1,0 +1,35 @@
+name: Build macOS Executable
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set Up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    - name: Install Dependencies
+      run: |
+        pip install pyinstaller
+        # You can add any additional dependencies here
+
+    - name: Build Executable
+      run: |
+        pyinstaller --onefile your_script.py
+        # Replace 'main.py' with your actual script filename
+
+    - name: Upload Executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: mac_exe.app
+        path: dist/your_script
